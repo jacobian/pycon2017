@@ -1,0 +1,22 @@
+- part 1: intro and throat clearing
+    - what is a web framework?
+    - BYO vs BOB
+    - show the (final) example app
+    - ex1: get your kit together
+        - objective: make sure your python works, know how to run wsgi apps
+        - part 1: write code (it_works.py), run with `python it_works.py`
+        - part 2: install waitress, run with waitress
+            - `cd ex1; waitress-serve it_works:demo_app`
+
+- part 2: WSGI handling
+    - introduce WSGI, handler, etc
+    - ex2: write a wsgi app
+        - objective: understand wsgi (a bit), write an app by hand
+        - html, "hello pycon'"
+        - show output, don't show how
+        - hint: could start by replacing demo_app
+        - bonus: add ?name=foo support (will require fucking with unicode!)
+
+- part 2: request/response abstractions
+    - wsgi app sucks (see above w/unicode!)
+    - request/response abstraction as response
