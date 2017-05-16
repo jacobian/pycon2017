@@ -1,6 +1,10 @@
 - part 1: intro and throat clearing
+    - setting expectations: 
+        - level, skill, hands-on
     - what is a web framework?
     - BYO vs BOB
+    - I'm sticking to the standard library, which is a bad idea that'll quickly become apparent
+    - example code is EXAMPLES, very little error handling etc
     - show the (final) example app
     - ex1: get your kit together
         - objective: make sure your python works, know how to run wsgi apps
@@ -20,3 +24,30 @@
 - part 2: request/response abstractions
     - wsgi app sucks (see above w/unicode!)
     - request/response abstraction as response
+        - where it breaks down (websockets, http2)
+    - ex3: write request/response abstraction
+        - objective: understand wrappers, parsing wsgi env, etc
+        - show: final code, decorator,nothing else
+    - after: show code, talk about all the ways it breaks
+    - show werkzeug version, compare a few things
+    - admission: in many ways, we're building a really shitty werkzeug
+    - DECISION POINT: by-hand vs werkzeug
+        - if you want to struggle, keep doing things by hand
+        - if you want the exercises to be easy, keep using werkzeug
+        - if I were building Django from scratch today, I'd use werkzeug
+
+- Let's make this a framework
+    - framework vs lib
+        - thinking about entry points
+        - is Flask a framework?
+    - the initial startup: how does a framework/library know what to run?
+        - Flask-style: run the app!
+        - Django-style: what the heck to run?
+            - DJANGO_SETTINGS_MODULE oh now I get it
+    - DECISION POINT: framework or library
+    - ex4: do a framework, or a library
+        - objective: think about the above
+        - figure out entry points
+        - goal: shuold have a framework/lib, and your app alone (which imports), and be able to invoke it
+    - my solution: introducing bizkit
+        - (django's a great mucisin, limp bizkit was named the 3rd worst band of the 90s by rolling stone) 
