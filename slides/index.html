@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="reveal.js/css/reveal.css">
+    <link rel="stylesheet" href="reveal.js/css/theme/beige.css">
+    <link rel="stylesheet" href="monokai-sublime.css">
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section data-markdown="slides.md"  
+                 data-charset="utf-8">
+        </section>
+      </div>
+    </div>
+    <script src="reveal.js/lib/js/head.min.js"></script>
+    <script src="reveal.js/js/reveal.js"></script>
+    <script>
+      Reveal.initialize({
+        transitionSpeed: 'fast',
+        dependencies: [
+            {src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+            {src: 'reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); }},
+            {src: 'reveal.js/plugin/markdown/marked.js'},
+            {src: 'reveal.js/plugin/markdown/markdown.js'},
+            {src: 'reveal.js/plugin/notes/notes.js', async: true },
+        ]
+      });
+    </script>
+  </body>
+</html>
