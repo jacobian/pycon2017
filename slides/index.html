@@ -1,8 +1,18 @@
-<html>
+<!doctype html>
+<html lang="en">
   <head>
+    <meta charset="utf-8"/>
     <link rel="stylesheet" href="reveal.js/css/reveal.css">
     <link rel="stylesheet" href="reveal.js/css/theme/beige.css">
     <link rel="stylesheet" href="monokai-sublime.css">
+    <style type="text/css">
+      /* left-align slide content */
+      .reveal .slides > section { text-align:left; }
+
+      /* don't outline blockquotes */
+      .reveal blockquote { box-shadow: none; }
+
+    </style>
   </head>
   <body>
     <div class="reveal">
@@ -17,6 +27,8 @@
     <script>
       Reveal.initialize({
         transitionSpeed: 'fast',
+        markdown: {smartypants: true},
+        history: true,
         dependencies: [
             {src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
             {src: 'reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); }},
