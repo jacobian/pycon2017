@@ -42,16 +42,73 @@ xxx
 
 ---
 
+## Choices web framework make
 
-    - BYO vs BOB
-    - I'm sticking to the standard library, which is a bad idea that'll quickly become apparent
-    - example code is EXAMPLES, very little error handling etc
-    - show the (final) example app
-    - ex1: get your kit together
-        - objective: make sure your python works, know how to run wsgi apps
-        - part 1: write code (it_works.py), run with `python it_works.py`
-        - part 2: install waitress, run with waitress
-            - `cd ex1; waitress-serve it_works:demo_app`
+- "Do It Yourself" or "Best Of Breed"?
+- Pure-WSGI or higher-level abstractions? What about Websockets? HTTP2?
+- Framework or Library?
+- Path-based or object-based routing?
+- MVC? MTV? WTF? BBQ?
+- Front-end or server-side templates?
+- ... 
+
+---
+
+## Choices web frameworks make
+
+There really aren't any right answers!
+
+You'll get to make many of these choices as we work through the tutorial. By doing so, my hope is that this'll help you better understand the choices _your_ framework of choice makes.
+
+For rather obvious reasons, _I_ will be making very similar choices to the ones Django makes. But you can -- and should -- make different ones.
+
+---
+
+## Where we're going
+
+xxx
+
+---
+
+## Exercise 1: "It Works!"
+
+### Goal:
+
+- Make sure you're all set up to do future exercises.
+- Know how to run WSGI apps in a couple of different ways
+
+---
+
+## Exercise 1: "It works!"
+
+1. Put this code in a file (`ex1/it_works.py`):
+
+    ```python
+    from wsgiref.simple_server import make_server, demo_app
+
+    if __name__ == '__main__':
+        with make_server('', 5000, demo_app) as server:
+            server.serve_forever()
+    ```
+
+2. Run it: 
+
+    ```sh
+    $ python ex1/it_works.py
+    ```
+
+3. Try a bonafide WSGI server, e.g. Twisted, uWSGI, Waitress, Gunicorn, ...
+
+---
+
+## Exercise 1: My Solution
+
+I used Twisted:
+
+```
+pip install twisted
+PYTHONPATH=ex1/ twist web --wsgi it_works.demo_app
+```
 
 ---
 
