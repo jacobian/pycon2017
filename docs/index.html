@@ -12,6 +12,8 @@
       /* don't outline blockquotes */
       .reveal blockquote { box-shadow: none; }
 
+      /* left-align code samples */
+      .reveal pre { margin-left: 0px; margin-right: 0px; }
     </style>
   </head>
   <body>
@@ -33,6 +35,9 @@
         transition: 'none',
         markdown: {smartypants: true},
         history: true,
+        width: 1024,
+        height: 768,
+        margin: 0,
         dependencies: [
             {src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
             {src: 'reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); }},

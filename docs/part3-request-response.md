@@ -3,7 +3,7 @@
 
 ---
 
-## Most frameworks abstract WSGI
+### Most frameworks abstract WSGI
 
 WSGI is complex and subtle; so is HTTP. For example, this has about six bugs in it:
 
@@ -14,9 +14,17 @@ name = GET.get('name', ['PyCon'])[0]
 
 More to the point, WSGI is too low a level of abstraction for most practice web development purposes. So most frameworks abstract WSGI.
 
+Note:
+1. doesn't properly handle URL character encodings
+2. bad handling of multi-values
+3. doesn't handle blanks correctly
+4. error handling - what about malformed requests?
+5. doesn't handle %-encoded correctly
+6. probably something else I don't know about
+
 ---
 
-## The request/response abstraction
+### The request/response abstraction
 
 Most frameworks end up with a request/response abstraction, turning apps into something like:
 
@@ -30,7 +38,7 @@ def application(request):
 
 ---
 
-## Why use the request/response pattern?
+### Why use the request/response pattern?
 
 - Conceptual simplicity and elegance
 - Maps closely to HTTP
@@ -39,23 +47,21 @@ def application(request):
 
 ---
 
-## Problems with the request/response pattern
+### Problems with the request/response pattern
 
-- WSGI is *not* request/response, and so the abstraction leaks
+- WSGI is *not actually* a request/response API, so the abstraction leaks
 - Streaming responses can be difficult
 - Maps very poorly to newer web standards (HTTP2, Websockets)
 
 ---
 
-## Exercise 3-1: request/response
+### Exercise 3-1: request/response
 
-### Goal
-
-Understand how web frameworks map WSGI to request/response objects.
+**Goal**: Understand how web frameworks map WSGI to request/response objects.
 
 ---
 
-## Exercise 3-1: request/response
+### Exercise 3-1: request/response
 
 Write your own request/response objects, and convert your "Hello PyCon" app to use these abstractions:
 
@@ -76,7 +82,7 @@ def application(request):
 
 ---
 
-## Exercise 3-1: My Request object
+### Exercise 3-1: My Request object
 
 ```python
 import urllib.parse
@@ -96,23 +102,34 @@ Note:
 
 ---
 
-## Exercise 3-1: My Response object
+### Exercise 3-1: My Response object
 
 ```python
 import http.client
 from wsgiref.headers import Headers
 
 class Response:
-    def __init__(self, response=None, status=200, charset='utf-8', content_type='text/html'):
+    def __init__(self, response=None, status=200, charset='utf-8', 
+                 content_type='text/html'):
+
         self.response = [] if response is None else response
         self.charset = charset
         self.headers = Headers()
-        self.headers.add_header('content-type', f'{content_type}; charset={charset})')
+        ctype = f'{content_type}; charset={charset})'
+        self.headers.add_header('content-type', ctype)
         self._status = status
+```
+
+---
+
+### Exercise 3-1: My response object, cont'd
+
+```python
+class Response:
 
     @property
     def status(self):
-        status_string = http.client.responses.get(self._status, 'UNKNOWN STATUS')
+        status_string = http.client.responses.get(self._status, 'UNKNOWN')
         return f'{self._status} {status_string}'
 
     def __iter__(self):
@@ -126,7 +143,7 @@ class Response:
 
 ---
 
-## Exercise 3-1: My converter function
+### Exercise 3-1: My converter function
 
 ```python
 def request_response_application(function):
@@ -140,7 +157,7 @@ def request_response_application(function):
 
 ---
 
-## Exercise 3-1: My app
+### Exercise 3-1: My app
 
 ```python
 @request_response_application
@@ -161,7 +178,7 @@ Isn't there an easier way?
 
 ---
 
-## Exercise 3-1: easy mode
+### Exercise 3-1: easy mode
 
 ```python
 from werkzeug.wrappers import Request, Response
@@ -189,14 +206,14 @@ Note:
 
 # Decision Point:
 
-## DIY vs BoB
+### "Do It Yourself" vs "Best of Breed"
 
 Note:
-"do it yourself" vs "Best of Breed"
+- tradeoff consistancy vs ease, familiarity
 
 ---
 
-## Is this a framework yet?
+### Is this a framework yet?
 
 What's a "framework", exactly?
 
@@ -206,7 +223,7 @@ Note:
 
 ---
 
-## The framework startup problem
+### The framework startup problem
 
 How does your framework know how to call into your code?
 
@@ -220,20 +237,20 @@ $ python start-my-awesome-framework.py
 
 # Decision Point:
 
-## Framework or Library?
+### Framework or Library?
 
 ---
 
-## Exercise 3-2: make a framework/library
+### Exercise 3-2: make a framework/library
 
-### Goal
+**Goal**:
 
 - Choose between library and framework-like patterns
 - Refactor your code into a tiny framework/library
 
 ---
 
-## Exercise 3-2: make a framework/library
+### Exercise 3-2: make a framework/library
 
 For a **framework**, your app should just be:
 
@@ -250,7 +267,7 @@ For a **library**, your code could look similar, but you'll point your WSGI serv
 
 ---
 
-## Exercise 3-2: My app
+### Exercise 3-2: My app
 
 ```python
 from bizkit import Response
@@ -262,7 +279,7 @@ def hello(request):
 
 ---
 
-## Exercise 3-2: My framework
+### Exercise 3-2: My framework
 
 ```python
 class Request: ...

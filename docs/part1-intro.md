@@ -1,9 +1,10 @@
 
-# Let's build a web framework!
+# Let's build 
+# a web framework!
 
 Jacob Kaplan-Moss
 
-[jacob@jacobian.org](mailto:jacob@jacobian.org)
+PyCon 2017
 
 ---
 
@@ -13,7 +14,7 @@ Jacob Kaplan-Moss
 
 ---
 
-## Goals and Expectations
+### Goals and Expectations
 
 By the end of this tutorial, you should have **implemented a (very) minimal web framework**, from scratch, and be able to use it to **understand what frameworks do under the hood** and the **choices web framework authors face**.
 
@@ -21,7 +22,7 @@ This is an **intermediate-level, hands-on** course — expect to spend the major
 
 ---
 
-## Logistics
+### Logistics
 
 **Slides**: Follow along with the slides at https://github.com/jacobian/pycon2017/
 
@@ -36,7 +37,7 @@ Note:
 
 ---
 
-## Agenda
+### Agenda
 
 1. Introduction & Getting Started
 2. WSGI
@@ -52,7 +53,7 @@ Note:
 
 ---
 
-## Choices web framework make
+### Theme: choices web framework make
 
 - "Do It Yourself" or "Best of Breed"?
 - Pure-WSGI or higher-level abstractions? What about WebSockets? HTTP2?
@@ -64,7 +65,7 @@ Note:
 
 ---
 
-## Choices web frameworks make
+### Choices web frameworks make
 
 There really aren't any right answers!
 
@@ -74,22 +75,33 @@ For rather obvious reasons, _I_ will be making very similar choices to the ones 
 
 ---
 
-## Where we're going
+### Where we're going
 
-xxx
+```python
+from bizkit import TemplateResponse, Router
+
+def hello(request, name):
+    db = GreetingDatabase()
+    count = db.get_and_increment_count("hello", name)
+    context = {"greeting": "Hello", "name": name, "count": count}
+    return TemplateResponse("greeting.html", context)
+
+routes = Router()
+routes.add_route(r'/hello/(.*)/$', hello)
+```
 
 ---
 
-## Exercise 1-1: "It Works!"
+### Exercise 1-1: "It Works!"
 
-### Goal:
+**Goal**:
 
 - Make sure you're all set up to do future exercises.
 - Know how to run WSGI apps in a couple of different ways.
 
 ---
 
-## Exercise 1-1: "It works!"
+### Exercise 1-1: "It works!"
 
 1. Put this code in a file (`ex1/it_works.py`):
 
@@ -111,11 +123,11 @@ xxx
 
 ---
 
-## Exercise 1-1: My Solution
+### Exercise 1-1: My Solution
 
 I used Twisted:
 
-```
+```bash
 pip install twisted
 PYTHONPATH=ex1/ twist web --wsgi it_works.demo_app
 ```

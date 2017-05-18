@@ -2,29 +2,31 @@
 
 ---
 
-## What is WSGI?
+### What is WSGI?
 
-The Web Server Gateway Interface, defined by PEP 3333.
+The Web Server Gateway Interface, defined by [PEP 3333](https://www.python.org/dev/peps/pep-3333/).
 
-WSGI defines standard API for web servers (e.g. Gunicorn, uWSGI, Twisted, etc.) to connect and talk to web applications/framworks (Django, Flask, etc.). WSGI is why you can use any web server with any web application.
+WSGI defines a standard API for web servers (e.g. Gunicorn, uWSGI, Twisted, etc.) to connect and talk to web applications/framworks (Django, Flask, etc.). WSGI is why you can use any web server with any web application.
 
 ---
 
-## The WSGI API
+### The WSGI API
 
-The WSGI API is desceptively simple:
+The WSGI API is deceptively simple:
 
-`application(environ, start_response)`
+```python
+def application(environ, start_response)
+```
 
 - `application` is your WSGI app, a callable.
 - It takes two arguments:
-    - `environ`, a dict containing the WSGI envronment
+    - `environ`, a dict containing the WSGI environment
     - `start_response`, a callback you call to begin the WSGI response
 - Your callable returns an iterator containing the body of the response.
 
 ---
 
-## Hello, WSGI
+### Hello, WSGI
 
 ```python
 def application(environ, start_response):
@@ -36,7 +38,7 @@ def application(environ, start_response):
 
 ---
 
-## The WSGI environ
+### The WSGI environ
 
 A dict provided by the WSGI server. There are some standard keys, defined by PEP 3333, but different web servers might do things differently. Typically, keys in ALL_CAPS correspond to their CGI equivalents, and keys beginning with `wsgi.` are defined by PEP 333.
 
@@ -48,7 +50,7 @@ $ twist web --wsgi wsgiref.simple_server.demo_app
 
 ---
 
-## Some useful environ keys
+### Some useful environ keys
 
 | Key | Contents |
 | --- | --- |
@@ -59,7 +61,7 @@ $ twist web --wsgi wsgiref.simple_server.demo_app
 
 ---
 
-## The start response callable
+### The start response callable
 
 Takes two arguments:
 
@@ -69,7 +71,7 @@ Takes two arguments:
 
 ---
 
-## The application return value
+### The application return value
 
 WSGI applications return iterables that yield bytes:
 
@@ -88,7 +90,7 @@ def app(environ, start_response):
 
 ---
 
-## Running a WSGI app
+### Running a WSGI app
 
 With the standard library:
 
@@ -108,16 +110,16 @@ $ gunicorn path.to.wsgi:application
 
 ---
 
-## Exercise 2-1: Hello, PyCon!
+### Exercise 2-1: Hello, PyCon!
 
-### Goal
+**Goal**:
 
 - Understand WSGI (a bit) by hand-writing a WSGI app.
 - Start to experience some of the pain that drives people to write frameworks!
 
 ---
 
-## Exercise 2-1: Hello, PyCon!
+### Exercise 2-1: Hello, PyCon!
 
 1. Write an app that displays "Hello, PyCon" (in HTML)
 
@@ -127,26 +129,20 @@ $ gunicorn path.to.wsgi:application
 
 ---
 
-## Exercise 2-1: My Solution
+### Exercise 2-1: My Solution
 
 ```python
 import urllib.parse
 
 def application(environ, start_response):
     status = '200 OK'
-    headers = [
-        ('Content-Type', 'text/html; charset=utf-8'),
-    ]
+    headers = [('Content-Type', 'text/html; charset=utf-8')]
     start_response(status, headers)
 
     GET = urllib.parse.parse_qs(environ['QUERY_STRING'])
     name = GET.get('name', ['PyCon'])[0]
 
-    return [
-        b'<html>',
-        (f'<body><h1>Hello, {name}!</body>').encode('utf-8'),
-        b'</html>',
-    ]
+    return [(f'<h1>Hello, {name}!</h1>').encode('utf-8')]
 ```
 
 Note:

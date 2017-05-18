@@ -2,7 +2,7 @@
 
 ---
 
-## Is this a good practice?
+### Is this a good practice?
 
 ```python
 def hello(request, name):
@@ -14,7 +14,7 @@ def goodbye(request, name):
 
 ---
 
-## Separation of concerns
+### Separation of concerns
 
 Most frameworks separate logic from visual presentation
 
@@ -36,7 +36,7 @@ Note:
 
 ---
 
-## Where should you render your views?
+### Where should you render your views?
 
 Traditionally, frameworks rendered HTML from templates on the server side.
 
@@ -46,7 +46,7 @@ My opinion: the next generation of web frameworks will be API-first, or API-only
 
 ---
 
-## Linking templates & controllers
+### Linking templates & controllers
 
 Render in the controller and return HTML?
 
@@ -73,9 +73,9 @@ def hello(request, name):
 
 ---
 
-## Exercise 5-1: Use a template engine (or, don't)
+### Exercise 5-1: Use a template engine (or, don't)
 
-1. Choose a template engine -- you probably want Jinja2.
+1. Choose a template engine -- you probably want [Jinja2](http://jinja.pocoo.org/).
 2. Modify your controllers to use templates
     - Choose a template rendering approach that speaks to you!
 
@@ -86,7 +86,7 @@ Note:
 
 ---
 
-## Exercise 5-1: My app
+### Exercise 5-1: My app
 
 ```python
 from bizkit import TemplateResponse, Router
@@ -106,7 +106,7 @@ routes.add_route(r'/goodbye/(.*)/$', goodbye)
 
 ---
 
-## Exercise 5-1: TemplateResponse
+### Exercise 5-1: My template response
 
 ```python
 class TemplateResponse(Response):

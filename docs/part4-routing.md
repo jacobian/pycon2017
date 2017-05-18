@@ -2,7 +2,7 @@
 
 ---
 
-## Routing
+### Routing
 
 Real apps are have many parts/functions, and Web frameworkss almost universally *route* different URLs to each function.  For example, consider Instagrm:
 
@@ -14,11 +14,11 @@ Real apps are have many parts/functions, and Web frameworkss almost universally 
 
 # Decision Point:
 
-## Match-based routing, or object traversal?
+## Match-based routing or<br> object traversal?
 
 ---
 
-## Object traversal
+### Object traversal
 
 - Maps URLs to Python objects, e.g. `/user/jacob/photos/14` might map to something like `users.get("jacob").photos.get(14)`.
 - Requires some sort of object routing protocol.
@@ -31,7 +31,7 @@ Note:
 
 ---
 
-## Match-based routing
+### Match-based routing
 
 - Build a *routing table* mapping URL patterns to callables/objects. e.g., Flask:
     ```python
@@ -44,7 +44,7 @@ Note:
 
 ---
 
-## Exercise 4-1: write a router
+### Exercise 4-1: write a router
 
 1. Choose object traversal or match-based routing
 2. Write two functions:
@@ -52,11 +52,11 @@ Note:
     def hello(request): ...
     def goodbye(request): ...
     ```
-3. Route `/hello` and `/goodbye` accordingly.
+3. Route `/hello/{name}/` and `/goodbye/{name}/`.
 
 ---
 
-## Exercise 4-1: my app
+### Exercise 4-1: my app
 
 ```python
 from bizkit import Response, Router
@@ -74,7 +74,7 @@ routes.add_route(r'/goodbye/(.*)/$', goodbye)
 
 ---
 
-## Exercise 4-1: my router
+### Exercise 4-1: my router
 
 ```python
 class Router:
