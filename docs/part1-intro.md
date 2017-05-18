@@ -30,6 +30,8 @@ This is an **intermediate-level, hands-on** course — expect to spend the major
 
 **Solutions**: If you want to peek at my solutions, you can find them at https://github.com/jacobian/pycon2017
 
+**Feedback**: https://www.surveymonkey.com/r/pycon250
+
 Note:
 - pairing is going to make things easier for me too
 - my code isn't great; focus on clarity of examples for slides, not anything else

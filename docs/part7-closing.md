@@ -42,3 +42,5 @@ And, of course, "reinventing the wheel is great if your goal is to learn more ab
 Jacob Kaplan-Moss
 
 [jacob@jacobian.org](mailto:jacob@jacobian.org)
+
+Feedback? https://www.surveymonkey.com/r/pycon250 
