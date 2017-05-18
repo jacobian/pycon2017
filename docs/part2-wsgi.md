@@ -154,5 +154,3 @@ Note:
 - error handling
 - query parsing
 - mixing "application" with "view"
-
----

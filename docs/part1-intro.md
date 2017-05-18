@@ -119,5 +119,3 @@ I used Twisted:
 pip install twisted
 PYTHONPATH=ex1/ twist web --wsgi it_works.demo_app
 ```
-
----

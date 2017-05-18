@@ -284,5 +284,3 @@ BIZKIT_APP=hello_bizkit:hello twist web --wsgi bizkit.application
 
 Note:
  -  limp bizkit: worst bad of the 90s get it? 
-
----
