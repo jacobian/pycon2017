@@ -6,6 +6,8 @@ Jacob Kaplan-Moss
 
 [jacob@jacobian.org](mailto:jacob@jacobian.org)
 
+Slides: https://jacobian.github.io/pycon2017/
+
 ---
 
 > ## "Reinventing the wheel is great if your goal is to learn more about wheels." 
