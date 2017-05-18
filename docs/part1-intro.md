@@ -24,11 +24,11 @@ This is an **intermediate-level, hands-on** course — expect to spend the major
 
 ### Logistics
 
-**Slides**: Follow along with the slides at https://github.com/jacobian/pycon2017/
+**Slides**: Follow along with the slides at https://jacobian.github.io/pycon2017/
 
 **Pairing**: I suggest pairing; there are some tricky bits, working in teams will make the exercises more manageable.
 
-**Solutions**: If you want to peek at my solutions, you can find them at https://github.com/jacobian/pycon2017
+**Solutions**:t https://github.com/jacobian/pycon2017
 
 **Feedback**: https://www.surveymonkey.com/r/pycon250
 
