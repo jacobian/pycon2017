@@ -4,7 +4,7 @@
 
 Jacob Kaplan-Moss
 
-PyCon 2017
+[jacob@jacobian.org](mailto:jacob@jacobian.org)
 
 ---
 
