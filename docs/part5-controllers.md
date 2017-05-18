@@ -86,3 +86,38 @@ Note:
 
 ---
 
+## Exercise 5-1: My app
+
+```python
+from bizkit import TemplateResponse, Router
+
+def hello(request, name):
+    context = {"greeting": "Hello", "name": name}
+    return TemplateResponse("greeting.html", context)
+
+def goodbye(request, name):
+    context = {"greeting": "Goodbye", "name": name}
+    return TemplateResponse("greeting.html", context)
+
+routes = Router()
+routes.add_route(r'/hello/(.*)/$', hello)
+routes.add_route(r'/goodbye/(.*)/$', goodbye)
+```
+
+---
+
+## Exercise 5-1: TemplateResponse
+
+```python
+class TemplateResponse(Response):
+    def __init__(self, template, context, **kwargs):
+        super().__init__(**kwargs)
+        self.template = template
+        self.context = context
+
+    def __iter__(self):
+        template = string.Template(open(self.template).read())
+        response = template.substitute(self.context)
+        yield response.encode(self.charset)
+```
+
