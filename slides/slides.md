@@ -1,3 +1,4 @@
+
 # Let's build a web framework!
 
 Jacob Kaplan-Moss
@@ -20,6 +21,21 @@ This is an **intermediate-level, hands-on** course — expect to spend the major
 
 ---
 
+## Logistics
+
+**Slides**: Follow along with the slides at https://.../
+
+**Teams**: I suggest pairing; there are some tricky bits, working in teams will make the exercises more manageable.
+
+**Solutions**: If you want to peek at my solutions, you can find them at https://github.com/jacobian/pycon2017.
+
+Note:
+- pairing is going to make things easier for me too
+- my code isn't great; focus on clarity of examples for slides, not anything else
+- I made some specific choices - only stdlib, Django-like choices
+
+---
+
 ## Agenda
 
 1. Introduction & Getting Started
@@ -33,12 +49,6 @@ This is an **intermediate-level, hands-on** course — expect to spend the major
 ---
 
 # Part 1: Introduction
-
----
-
-## What's a web framework?
-
-xxx
 
 ---
 
@@ -75,7 +85,7 @@ xxx
 ### Goal:
 
 - Make sure you're all set up to do future exercises.
-- Know how to run WSGI apps in a couple of different ways
+- Know how to run WSGI apps in a couple of different ways.
 
 ---
 
@@ -114,47 +124,448 @@ PYTHONPATH=ex1/ twist web --wsgi it_works.demo_app
 
 # Part 2: WSGI
 
-    - introduce WSGI, handler, etc
-    - ex2: write a wsgi app
-        - objective: understand wsgi (a bit), write an app by hand
-        - html, "hello pycon'"
-        - show output, don't show how
-        - hint: could start by replacing demo_app
-        - bonus: add ?name=foo support (will require fucking with unicode!)
+---
+
+## What is WSGI?
+
+The Web Server Gateway Interface, defined by PEP 3333.
+
+WSGI defines standard API for web servers (e.g. Gunicorn, uWSGI, Twisted, etc.) to connect and talk to web applications/framworks (Django, Flask, etc.). WSGI is why you can use any web server with any web application.
+
+---
+
+## The WSGI API
+
+The WSGI API is desceptively simple:
+
+`application(environ, start_response)`
+
+- `application` is your WSGI app, a callable.
+- It takes two arguments:
+    - `environ`, a dict containing the WSGI envronment
+    - `start_response`, a callback you call to begin the WSGI response
+- Your callable returns an iterator containing the body of the response.
+
+---
+
+## Hello, WSGI
+
+```python
+def application(environ, start_response):
+    status = '200 OK'
+    headers = [('Content-Type', 'text/html; charset=utf8')]
+    start_response(status, headers)
+    return [b"<h1>Hello, World!</h1>"]
+```
+
+---
+
+## The WSGI environ
+
+A dict provided by the WSGI server. There are some standard keys, defined by PEP 3333, but different web servers might do things differently. Typically, keys in ALL_CAPS correspond to their CGI equivalents, and keys beginning with `wsgi.` are defined by PEP 333.
+
+Tip: `wsgiref.simple_server.demo_app` dumps the WSGI environ:
+
+```bash
+$ twist web --wsgi wsgiref.simple_server.demo_app
+```
+
+---
+
+## Some useful environ keys
+
+| Key | Contents |
+| --- | --- |
+| `PATH_INFO` | Path component of the request, e.g. `/foo/bar/` |
+| `QUERY_STRING` | GET query, e.g. `foo=bar&baz=spam` |
+| `HTTP_{HEADER}` | Contents of the HTTP header `{HEADER}` |
+| `wsgi.input` | xxx is this where POST lives? |
+
+---
+
+## The start response callable
+
+Takes two arguments:
+
+- `status`, a string (wat) containing the status code and readable description
+- `headers`, a list of 2-tuples containing HTTP headers
+    - NB: being explicit about the `charset` here is more important than you might think.
+
+---
+
+## The application return value
+
+WSGI applications return iterables that yield bytes:
+
+```python
+def app(environ, start_response):
+    ...
+    return [b'Hello', b'World']
+
+def app(environ, start_response):
+    ...
+    yield b'Hello'
+    yield b'World'
+```
+
+**Make sure the charset matches what's in your `Content-Type`, or you're gonna have a bad time.**
+
+---
+
+## Running a WSGI app
+
+With the standard library:
+
+```python
+if __name__ == '__main__':
+    with make_server('', 5000, application) as server:
+        server.serve_forever()
+```
+
+With some a WSGI server:
+
+```
+$ waitress-serve path.to.wsgi:application
+$ twist web --wsgi path.to.wsgi.application
+$ gunicorn path.to.wsgi:application
+```
+
+---
+
+## Exercise 2: Hello, PyCon!
+
+### Goal
+
+- Understand WSGI (a bit) by hand-writing a WSGI app.
+- Start to experience some of the pain that drives people to write frameworks!
+
+---
+
+## Exercise 2: Hello, PyCon!
+
+1. Write an app that displays "Hello, PyCon" (in HTML)
+
+2. Make the app support a `name` GET argument, so that `http://localhost:8080/?name=Jacob` displays "Hello, Jacob".
+    - Hint: `environ['QUERY_STRING']` will be useful.
+    - Hint: think carefully about unicode vs bytes!
+
+---
+
+## Exercise 2: My Solution
+
+```python
+import urllib.parse
+
+def application(environ, start_response):
+    status = '200 OK'
+    headers = [
+        ('Content-Type', 'text/html; charset=utf-8'),
+    ]
+    start_response(status, headers)
+
+    GET = urllib.parse.parse_qs(environ['QUERY_STRING'])
+    name = GET.get('name', ['PyCon'])[0]
+
+    return [
+        b'<html>',
+        (f'<body><h1>Hello, {name}!</body>').encode('utf-8'),
+        b'</html>',
+    ]
+```
+
+Note:
+- unicode
+- error handling
+- query parsing
+- mixing "application" with "view"
 
 ---
 
 # Part 3: Request/response abstractions
 
-    - wsgi app sucks (see above w/unicode!)
-    - request/response abstraction as response
-        - where it breaks down (websockets, http2)
-    - ex3: write request/response abstraction
-        - objective: understand wrappers, parsing wsgi env, etc
-        - show: final code, decorator,nothing else
-    - after: show code, talk about all the ways it breaks
-    - show werkzeug version, compare a few things
-    - admission: in many ways, we're building a really shitty werkzeug
-    - DECISION POINT: by-hand vs werkzeug
-        - if you want to struggle, keep doing things by hand
-        - if you want the exercises to be easy, keep using werkzeug
-        - if I were building Django from scratch today, I'd use werkzeug
+---
 
-- Let's make this a framework
-    - framework vs lib
-        - thinking about entry points
-        - is Flask a framework?
-    - the initial startup: how does a framework/library know what to run?
-        - Flask-style: run the app!
-        - Django-style: what the heck to run?
-            - DJANGO_SETTINGS_MODULE oh now I get it
-    - DECISION POINT: framework or library
-    - ex4: do a framework, or a library
-        - objective: think about the above
-        - figure out entry points
-        - goal: shuold have a framework/lib, and your app alone (which imports), and be able to invoke it
-    - my solution: introducing bizkit
-        - (django's a great mucisin, limp bizkit was named the 3rd worst band of the 90s by rolling stone) 
+## Most frameworks abstract WSGI
+
+WSGI is complex and subtle; so is HTTP. For example, this has about six bugs in it:
+
+```python
+GET = urllib.parse.parse_qs(environ['QUERY_STRING'])
+name = GET.get('name', ['PyCon'])[0]
+```
+
+More to the point, WSGI is too low a level of abstraction for most practice web development purposes. So most frameworks abstract WSGI.
+
+---
+
+## The request/response abstraction
+
+Most frameworks end up with a request/response abstraction, turning apps into something like:
+
+```python
+from somewhere import Response
+
+def application(request):
+    ...
+    return Response('...')
+```
+
+---
+
+## Why use the request/response pattern?
+
+- Conceptual simplicity and elegance
+- Maps closely to HTTP
+- Mocking/testing can be done fairly easily
+- A widely used pattern, both in Python and elsewhere
+
+---
+
+## Problems with the request/response pattern
+
+- WSGI is *not* request/response, and so the abstraction leaks
+- Streaming responses can be difficult
+- Maps very poorly to newer web standards (HTTP2, Websockets)
+
+---
+
+## Exercise 3: request/response
+
+### Goal
+
+Understand how web frameworks map WSGI to request/response objects.
+
+---
+
+## Exercise 3: request/response
+
+Write your own request/response objects, and convert your "Hello PyCon" app to use these abstractions:
+
+```python
+class Request: ...
+class Response: ...
+
+def request_response_application(function):
+    def application(environ, start_response):
+        ...
+    return application
+
+@request_response_application
+def application(request):
+    ...
+    return Response(...)
+```
+
+---
+
+## Exercise 3: My Request object
+
+```python
+import urllib.parse
+
+class Request:
+    def __init__(self, environ):
+        self.environ = environ
+
+    @property
+    def args(self):
+        get_args = urllib.parse.parse_qs(self.environ['QUERY_STRING'])
+        return {k:v[0] for k, v in get_args.items()}
+```
+
+Note:
+- overly simplistic `args`
+
+---
+
+## Exercise 3: My Response object
+
+```python
+import http.client
+from wsgiref.headers import Headers
+
+class Response:
+    def __init__(self, response=None, status=200, charset='utf-8', content_type='text/html'):
+        self.response = [] if response is None else response
+        self.charset = charset
+        self.headers = Headers()
+        self.headers.add_header('content-type', f'{content_type}; charset={charset})')
+        self._status = status
+
+    @property
+    def status(self):
+        status_string = http.client.responses.get(self._status, 'UNKNOWN STATUS')
+        return f'{self._status} {status_string}'
+
+    def __iter__(self):
+        for k in self.response:
+            if isinstance(k, bytes):
+                yield k
+            else:
+                yield k.encode(self.charset) 
+
+```
+
+---
+
+## Exercise 3: My converter function
+
+```python
+def request_response_application(function):
+    def application(environ, start_response):
+        request = Request(environ)
+        response = function(request)
+        start_response(response.status, response.headers.items())
+        return iter(response)
+    return application
+```
+
+---
+
+## Exercise 3: My app
+
+```python
+@request_response_application
+def application(request):
+    name = request.args.get('name', 'PyCon')
+    return Response([
+        '<doctype html>',
+        '<html>',
+        f'<head><title>Hello, {name}</title></head>',
+        f'<body><h1>Hello, {name}!</body>',
+        '</html>',
+    ])
+```
+
+---
+
+Isn't there an easier way?
+
+---
+
+## Exercise 3: easy mode
+
+```python
+from werkzeug.wrappers import Request, Response
+
+@Request.application
+def application(request):
+    name = request.args.get('name', 'PyCon')
+    return Response(f'''
+        <doctype html>
+        <html>
+        <head><title>Hello, {name}</title></head>
+        <body><h1>Hello, {name}!</body>
+        </html>
+    ''', content_type='text/html')
+```
+
+In many ways, in this tutorial we're building a really crummy Werkzeug.
+
+Note:
+- if you want to struggle, keep doing things by hand
+- if you want the exercises to be easy, keep using werkzeug
+- if I were building Django from scratch today, I'd use werkzeug
+
+---
+
+# Decision Point:
+
+## DIY vs BYO
+
+---
+
+## Is this a framework yet?
+
+What's a "framework", exactly?
+
+Note:
+- it's all about who calls whom
+- is Flask a framework?
+
+---
+
+## The framework startup problem
+
+How does your framework know how to call into your code?
+
+```bash
+$ python start-my-awesome-framework.py
+```
+
+(Now you understand why `DJANGO_SETTINGS_MODULE` exists...)
+
+---
+
+# Decision Point:
+
+## Framework or Library?
+
+---
+
+## Exercise 4: make a framework/library
+
+### Goal
+
+- Choose between library and framework-like patterns
+- Refactor your code into a tiny framework/library
+
+---
+
+## Exercise 4: make a framework/library
+
+For a **framework**, your app should just be:
+
+```python
+from myframework import Response
+
+def hello(request):
+    return Response(...)
+```
+
+And you'll point your WSGI server at `myframework.application`
+
+For a **library**, your code could look similar, but you'll point your WSGI server directly at that file.
+
+---
+
+## Exercise 4: My app
+
+```python
+from bizkit import Response
+
+def hello(request):
+    name = request.args.get('name', 'PyCon')
+    return Response(f"<h1>Hello, {name}</h1>")
+```
+
+---
+
+## Exercise 4: My framework
+
+```python
+class Request: ...
+class Response: ...
+
+def application(environ, start_response):
+    module, app_name = os.environ['BIZKIT_APP'].split(':')
+    module = importlib.import_module(module)
+    app = getattr(module, app_name)
+
+    request = Request(environ)
+    response = app(request)
+    start_response(response.status, response.headers.items())
+    return iter(response)
+```
+
+Run it:
+
+```bash
+BIZKIT_APP=hello_bizkit:hello twist web --wsgi bizkit.application
+```
+
+Note:
+ -  limp bizkit: worst bad of the 90s get it? 
 
 ---
 

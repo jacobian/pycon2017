@@ -1,3 +1,4 @@
+import os
 import sys
 import importlib
 import urllib.parse
@@ -40,19 +41,17 @@ class Response:
             else:
                 yield k.encode(self.charset) 
 
-def make_application(function):
-    def application(environ, start_response):
-        request = Request(environ)
-        response = function(request)
-        start_response(response.status, response.headers.items())
-        return iter(response)
-    return application
-
-if __name__ == '__main__':
-    module, app_name = sys.argv[1].split(':')
+def application(environ, start_response):
+    module, app_name = os.environ['BIZKIT_APP'].split(':')
     module = importlib.import_module(module)
     app = getattr(module, app_name)
-    wrapped = make_application(app)
-    with make_server('', 5000, wrapped) as server:
+
+    request = Request(environ)
+    response = app(request)
+    start_response(response.status, response.headers.items())
+    return iter(response)
+
+if __name__ == '__main__':
+    with make_server('', 5000, application) as server:
         server.serve_forever()
 

@@ -3,7 +3,7 @@ import http.client
 from wsgiref.simple_server import make_server
 from wsgiref.headers import Headers
 
-def make_application(function):
+def request_response_application(function):
     def application(environ, start_response):
         request = Request(environ)
         response = function(request)
@@ -11,7 +11,7 @@ def make_application(function):
         return iter(response)
     return application
 
-@make_application
+@request_response_application
 def application(request):
     name = request.args.get('name', 'PyCon')
     return Response([
