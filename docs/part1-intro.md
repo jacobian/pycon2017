@@ -54,7 +54,7 @@ Note:
 
 ## Choices web framework make
 
-- "Do It Yourself" or "Best Of Breed"?
+- "Do It Yourself" or "Best of Breed"?
 - Pure-WSGI or higher-level abstractions? What about WebSockets? HTTP2?
 - Framework or Library?
 - Path-based or object-based routing?

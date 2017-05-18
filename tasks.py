@@ -21,6 +21,7 @@ RUNNERS = {
     'ex3-2': ('bizkit.application', {'BIZKIT_APP': 'hello_bizkit:hello'}),
     'ex4-1': ('bizkit.application', {'BIZKIT_APP': 'hello_goodbye'}),
     'ex5-1': ('bizkit.application', {'BIZKIT_APP': 'hello_goodbye_templates'}),
+    'ex6-1': ('bizkit.application', {'BIZKIT_APP': 'greeting_persist'}),
 }
 
 @task(name="run")
