@@ -39,12 +39,12 @@ Note:
 ## Agenda
 
 1. Introduction & Getting Started
-1. WSGI
-1. HTTP request/response abstractions
-1. Routing
-1. Controllers, Views and Templates
-1. Data storage
-1. Closing thoughts
+2. WSGI
+3. HTTP request/response abstractions
+4. Routing
+5. Controllers, Views and Templates
+6. Data storage
+7. Closing thoughts
 
 ---
 
@@ -55,7 +55,7 @@ Note:
 ## Choices web framework make
 
 - "Do It Yourself" or "Best Of Breed"?
-- Pure-WSGI or higher-level abstractions? What about Websockets? HTTP2?
+- Pure-WSGI or higher-level abstractions? What about WebSockets? HTTP2?
 - Framework or Library?
 - Path-based or object-based routing?
 - MVC? MTV? WTF? BBQ?
@@ -80,7 +80,7 @@ xxx
 
 ---
 
-## Exercise 1: "It Works!"
+## Exercise 1-1: "It Works!"
 
 ### Goal:
 
@@ -89,7 +89,7 @@ xxx
 
 ---
 
-## Exercise 1: "It works!"
+## Exercise 1-1: "It works!"
 
 1. Put this code in a file (`ex1/it_works.py`):
 
@@ -111,7 +111,7 @@ xxx
 
 ---
 
-## Exercise 1: My Solution
+## Exercise 1-1: My Solution
 
 I used Twisted:
 

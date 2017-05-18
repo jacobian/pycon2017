@@ -44,7 +44,7 @@ Note:
 
 ---
 
-## Exercise 5: write a router
+## Exercise 4-1: write a router
 
 1. Choose object traversal or match-based routing
 2. Write two functions:
@@ -56,7 +56,7 @@ Note:
 
 ---
 
-## Exercise 5: my app
+## Exercise 4-1: my app
 
 ```python
 from bizkit import Response, Router
@@ -74,7 +74,7 @@ routes.add_route(r'/goodbye/(.*)/$', goodbye)
 
 ---
 
-## Exercise 5: my router
+## Exercise 4-1: my router
 
 ```python
 class Router:
@@ -94,7 +94,7 @@ class Router:
 
 ---
 
-### Exercise 5: WSGI application
+### Exercise 4-1: WSGI application
 
 ```python
 def application(environ, start_response):

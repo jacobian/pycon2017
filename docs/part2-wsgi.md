@@ -108,7 +108,7 @@ $ gunicorn path.to.wsgi:application
 
 ---
 
-## Exercise 2: Hello, PyCon!
+## Exercise 2-1: Hello, PyCon!
 
 ### Goal
 
@@ -117,7 +117,7 @@ $ gunicorn path.to.wsgi:application
 
 ---
 
-## Exercise 2: Hello, PyCon!
+## Exercise 2-1: Hello, PyCon!
 
 1. Write an app that displays "Hello, PyCon" (in HTML)
 
@@ -127,7 +127,7 @@ $ gunicorn path.to.wsgi:application
 
 ---
 
-## Exercise 2: My Solution
+## Exercise 2-1: My Solution
 
 ```python
 import urllib.parse

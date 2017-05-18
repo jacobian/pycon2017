@@ -47,7 +47,7 @@ def application(request):
 
 ---
 
-## Exercise 3: request/response
+## Exercise 3-1: request/response
 
 ### Goal
 
@@ -55,7 +55,7 @@ Understand how web frameworks map WSGI to request/response objects.
 
 ---
 
-## Exercise 3: request/response
+## Exercise 3-1: request/response
 
 Write your own request/response objects, and convert your "Hello PyCon" app to use these abstractions:
 
@@ -76,7 +76,7 @@ def application(request):
 
 ---
 
-## Exercise 3: My Request object
+## Exercise 3-1: My Request object
 
 ```python
 import urllib.parse
@@ -96,7 +96,7 @@ Note:
 
 ---
 
-## Exercise 3: My Response object
+## Exercise 3-1: My Response object
 
 ```python
 import http.client
@@ -126,7 +126,7 @@ class Response:
 
 ---
 
-## Exercise 3: My converter function
+## Exercise 3-1: My converter function
 
 ```python
 def request_response_application(function):
@@ -140,7 +140,7 @@ def request_response_application(function):
 
 ---
 
-## Exercise 3: My app
+## Exercise 3-1: My app
 
 ```python
 @request_response_application
@@ -161,7 +161,7 @@ Isn't there an easier way?
 
 ---
 
-## Exercise 3: easy mode
+## Exercise 3-1: easy mode
 
 ```python
 from werkzeug.wrappers import Request, Response
@@ -182,14 +182,17 @@ In many ways, in this tutorial we're building a really crummy Werkzeug.
 
 Note:
 - if you want to struggle, keep doing things by hand
-- if you want the exercises to be easy, keep using werkzeug
-- if I were building Django from scratch today, I'd use werkzeug
+- if you want the exercises to be easy, keep using Werkzeug
+- if I were building Django from scratch today, I'd use Werkzeug
 
 ---
 
 # Decision Point:
 
-## DIY vs BYO
+## DIY vs BoB
+
+Note:
+"do it yourself" vs "Best of Breed"
 
 ---
 
@@ -221,7 +224,7 @@ $ python start-my-awesome-framework.py
 
 ---
 
-## Exercise 4: make a framework/library
+## Exercise 3-2: make a framework/library
 
 ### Goal
 
@@ -230,7 +233,7 @@ $ python start-my-awesome-framework.py
 
 ---
 
-## Exercise 4: make a framework/library
+## Exercise 3-2: make a framework/library
 
 For a **framework**, your app should just be:
 
@@ -247,7 +250,7 @@ For a **library**, your code could look similar, but you'll point your WSGI serv
 
 ---
 
-## Exercise 4: My app
+## Exercise 3-2: My app
 
 ```python
 from bizkit import Response
@@ -259,7 +262,7 @@ def hello(request):
 
 ---
 
-## Exercise 4: My framework
+## Exercise 3-2: My framework
 
 ```python
 class Request: ...
