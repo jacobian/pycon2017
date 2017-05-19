@@ -209,7 +209,7 @@ Note:
 ### "Do It Yourself" vs "Best of Breed"
 
 Note:
-- tradeoff consistancy vs ease, familiarity
+- tradeoff consistency vs ease, familiarity
 
 ---
 

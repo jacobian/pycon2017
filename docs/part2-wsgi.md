@@ -57,7 +57,7 @@ $ twist web --wsgi wsgiref.simple_server.demo_app
 | `PATH_INFO` | Path component of the request, e.g. `/foo/bar/` |
 | `QUERY_STRING` | GET query, e.g. `foo=bar&baz=spam` |
 | `HTTP_{HEADER}` | Contents of the HTTP header `{HEADER}` |
-| `wsgi.input` | xxx is this where POST lives? |
+| `wsgi.input` | A file-like object containing the request body (i.e. `POST` data) |
 
 ---
 

@@ -54,6 +54,8 @@ Note:
     ```
 3. Route `/hello/{name}/` and `/goodbye/{name}/`.
 
+Hint: you've previously pointed your app/framework at a function, you'll now need to point that at a router.
+
 ---
 
 ### Exercise 4-1: my app
